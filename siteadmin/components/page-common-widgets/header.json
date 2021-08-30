@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_page_common_widgets_headers",
+  "info": {
+    "name": "Header",
+    "icon": "align-justify",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {  
+    "Menu": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.menu"
+    },
+    "WidgetBinder": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.widget-binder"
+    }, 
+    "Context": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.page-context"
+    }
+  }
+}

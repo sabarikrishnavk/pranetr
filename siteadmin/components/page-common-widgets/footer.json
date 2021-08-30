@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_page_common_widgets_footers",
+  "info": {
+    "name": "Footer",
+    "icon": "align-center",
+    "description": ""
+  },
+  "options": {},
+  "attributes": { 
+    "WidgetBinder": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.widget-binder"
+    },
+    "Context": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.page-context"
+    } 
+  }
+}

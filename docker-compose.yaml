@@ -1,0 +1,16 @@
+
+version: '3.1'
+services:  
+  strapi:
+    image: strapi/strapi
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_NAME: yugabyte
+      DATABASE_HOST: host.docker.internal
+      DATABASE_PORT: 5433
+      DATABASE_USERNAME: yugabyte
+      DATABASE_PASSWORD: yugabyte
+    volumes:
+      - ./app:/srv/app
+    ports:
+      - '1337:1337'

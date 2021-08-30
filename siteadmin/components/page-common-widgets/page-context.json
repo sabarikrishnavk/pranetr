@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_page_common_widgets_page_contexts",
+  "info": {
+    "name": "PageContext",
+    "icon": "address-book"
+  },
+  "options": {},
+  "attributes": {
+    "storeIdentifier": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "default": "en_US"
+    },
+    "pageName": {
+      "type": "string"
+    },
+    "userId": {
+      "type": "string"
+    },
+    "sessionId": {
+      "type": "string"
+    },
+    "audienceSegment": {
+      "type": "integer"
+    }
+  }
+}

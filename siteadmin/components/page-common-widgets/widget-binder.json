@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_page_common_widgets_widget_binders",
+  "info": {
+    "name": "WidgetBinder",
+    "icon": "adjust"
+  },
+  "options": {},
+  "attributes": {
+    "Style": {
+      "type": "richtext"
+    },
+    "Script": {
+      "type": "richtext"
+    },
+    "Template": {
+      "type": "richtext"
+    },
+    "DataBinder": {
+      "type": "richtext"
+    },
+    "Data": {
+      "type": "json"
+    }
+  }
+}

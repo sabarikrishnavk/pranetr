@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "header_templates",
+  "info": {
+    "name": "HeaderTemplates"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Header": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.header"
+    }
+  }
+}

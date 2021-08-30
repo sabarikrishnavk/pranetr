@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_page_common_widgets_api_binders",
+  "info": {
+    "name": "APIBinder",
+    "icon": "asterisk"
+  },
+  "options": {},
+  "attributes": {
+    "externalAPI": {
+      "type": "string"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "pathParameters": {
+      "type": "json"
+    },
+    "queryParameters": {
+      "type": "json"
+    },
+    "headerParameters": {
+      "type": "json"
+    }
+  }
+}

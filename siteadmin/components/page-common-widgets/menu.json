@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_page_common_widgets_menus",
+  "info": {
+    "name": "Menu",
+    "icon": "align-left",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "WidgetBinder": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.widget-binder"
+    }
+  }
+}

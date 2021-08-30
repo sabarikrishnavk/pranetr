@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_body_widgets_home_bodies",
+  "info": {
+    "name": "HomeBody",
+    "icon": "air-freshener",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "HomeBanner": {
+      "type": "richtext"
+    },
+    "HomeRow1": {
+      "type": "richtext"
+    },
+    "HomeRow2": {
+      "type": "richtext"
+    },
+    "HomeRow3": {
+      "type": "richtext"
+    },
+    "HomeRow4": {
+      "type": "richtext"
+    },
+    "PageContext": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.page-context"
+    }
+  }
+}

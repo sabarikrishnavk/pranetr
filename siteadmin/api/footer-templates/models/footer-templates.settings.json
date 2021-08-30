@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "footer_templates",
+  "info": {
+    "name": "FooterTemplates"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Footer": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.footer"
+    }
+  }
+}

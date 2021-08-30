@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_page_common_widgets_config_maps",
+  "info": {
+    "name": "ConfigMap",
+    "icon": "apple-alt"
+  },
+  "options": {},
+  "attributes": {
+    "PageType": {
+      "type": "enumeration",
+      "enum": [
+        "HomePage",
+        "CategoryPage",
+        "ProductListingPage",
+        "ProductDetailsPage",
+        "SearchResultsPage",
+        "CartPage",
+        "CheckoutAddressPage",
+        "CheckoutPaymentPage",
+        "OrderReviewPage",
+        "OrderConfirmationPage",
+        "LoginPage",
+        "RegistrationPage",
+        "MyProfilePage",
+        "MyAddressPage",
+        "MyOrdersPage",
+        "TrackOrderPage",
+        "MyOrderDetailsPage",
+        "MyCouponsPage",
+        "MyPaymentCardsPage"
+      ]
+    },
+    "FeatureMap": {
+      "type": "json"
+    },
+    "PageContext": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.page-context"
+    }
+  }
+}

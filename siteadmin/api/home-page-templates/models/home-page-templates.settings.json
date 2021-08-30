@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "home_page_templates",
+  "info": {
+    "name": "HomePageTemplates",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "HomeBody": {
+      "type": "component",
+      "repeatable": false,
+      "component": "body-widgets.home-body"
+    },
+    "Analytics": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.analytics"
+    },
+    "ConfigMap": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.config-map"
+    }
+  }
+}

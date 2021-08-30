@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_page_common_widgets_analytics",
+  "info": {
+    "name": "Analytics",
+    "icon": "anchor",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Binder": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.widget-binder"
+    },
+    "PageSiteData": {
+      "type": "richtext"
+    },
+    "SEO": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.seo"
+    }
+  }
+}

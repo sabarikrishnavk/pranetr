@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_page_common_widgets_seos",
+  "info": {
+    "name": "SEO",
+    "icon": "angle-double-down"
+  },
+  "options": {},
+  "attributes": {
+    "MetaTitle": {
+      "type": "string"
+    },
+    "Keywords": {
+      "type": "text"
+    },
+    "Description": {
+      "type": "text"
+    },
+    "CanonicalURL": {
+      "type": "string"
+    },
+    "CanonicalTitle": {
+      "type": "string"
+    }
+  }
+}
