@@ -11,6 +11,9 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "storeIdentifier": {
+      "type": "string"
+    },
     "Header": {
       "type": "component",
       "repeatable": false,

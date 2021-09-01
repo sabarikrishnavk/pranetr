@@ -11,6 +11,9 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "storeIdentifier": {
+      "type": "string"
+    },
     "Footer": {
       "type": "component",
       "repeatable": false,

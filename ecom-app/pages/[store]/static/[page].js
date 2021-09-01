@@ -1,74 +1,129 @@
-import { useRouter } from 'next/router'
-import ErrorPage from 'next/error'
 import Head from 'next/head'
-import Container from '@/components/common/container'
-import PostBody from '@/components/post-body' 
-import Header from '@/components/common/header'
-import PostHeader from '@/components/post-header'
-import SectionSeparator from '@/components/section-separator'
-import Layout from '@/components/layout'
-import { getAllPostsWithSlug, getPostAndMorePosts } from '@/lib/api'
-import PostTitle from '@/components/post-title'
-import { CMS_NAME } from '@/lib/constants'
-import markdownToHtml from '@/lib/markdownToHtml'
+import Image from 'next/image' 
+import { gql } from "@apollo/client";
+import client from "../../../lib/apollo-client"; 
+import styled, { createGlobalStyle } from 'styled-components';
 
-export default function Post({ post, morePosts, preview }) {
-  const router = useRouter()
-  if (!router.isFallback && !post?.slug) {
-    return <ErrorPage statusCode={404} />
+const GlobalStyle = createGlobalStyle`
+  * {
+  box-sizing: border-box;
+  word-wrap: break-word;
   }
-  return (
-    <Layout preview={preview}>
-      <Container>
-        <Header />
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <article>
-              <Head>
-                <title>
-                  {post.title} | Next.js Blog Example with {CMS_NAME}
-                </title>
-                <meta property="og:image" content={post.ogImage.url} />
-              </Head>
-              <PostHeader
-                title={post.title}
-                coverImage={post.coverImage}
-                date={post.date}
-                author={post.author}
-              />
-              <PostBody content={post.content} />
-            </article>
-            <SectionSeparator />
-            {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-          </>
-        )}
-      </Container>
-    </Layout>
+  body {
+    font-family: Arial, Helvetica, Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: .03rem;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 4rem;
+  }
+  a {
+    color: #bf9e5f;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  img {
+    border: 0px;
+    width: 100%;
+  }
+`;
+
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  text-align: center;
+`;
+
+
+const HeaderStyle = styled.div`${props => props.headerTemplate.Header.WidgetBinder.Style}`; 
+const MenuStyle = styled.div`${props => props.headerTemplate.Header.Menu.WidgetBinder.Style}`;
+const Footer = styled.div`${props => props.footerTemplate.Footer.WidgetBinder.Style}`;
+   
+export default function Home({headerTemplate, footerTemplate}) {
+  // 
+  return (  
+  <div>   
+      <HeaderStyle headerTemplate={headerTemplate}>
+        <div dangerouslySetInnerHTML={{ __html: headerTemplate.Header.WidgetBinder.Template }} />  
+      </HeaderStyle>
+
+      <MenuStyle headerTemplate={headerTemplate}>
+          <div dangerouslySetInnerHTML={{ __html: headerTemplate.Header.Menu.WidgetBinder.Template }} />  
+          <script type="text/javascript"
+            dangerouslySetInnerHTML={{ __html: headerTemplate.Header.Menu.WidgetBinder.Script}}>
+        </script>
+      </MenuStyle> 
+
+      <Footer footerTemplate={footerTemplate}>
+        <div dangerouslySetInnerHTML={{ __html: footerTemplate.Footer.WidgetBinder.Template }} />  
+      </Footer>  
+    </div>
   )
 }
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { store: 'Site1' ,page : "about-us"} },
+      { params: { store: 'Site2' ,page : "about-us"} }
+    ],
+    fallback: "blocking"
+  };
+} 
+export async function getStaticProps({params ,preview = false}) {
 
-export async function getStaticProps({ params, preview = null }) {
-  const data = await getPostAndMorePosts(params.slug, preview)
-  const content = await markdownToHtml(data?.posts[0]?.content || '')
+  console.log("preview :: "+ preview)
+
+  let publishState = preview ? "PREVIEW" : "LIVE" ;
+
+  const { data } = await client.query({
+    query: gql`
+      query page ($storeIdentifier: String , $publicationState: PublicationState) {
+  
+      headerTemplates(publicationState : $publicationState, where :{storeIdentifier:$storeIdentifier}){
+        id,
+        Header{
+          Menu{
+            WidgetBinder{
+              Template
+              Style
+              Script
+            }
+          }
+          WidgetBinder{
+            Template
+            Style
+            
+          }
+        } 
+      }
+      footerTemplates(publicationState : PREVIEW, where :{storeIdentifier:$storeIdentifier}){
+        Footer{
+          WidgetBinder{
+            Template
+            Style
+          }
+        }
+      }
+    }
+    `,
+    variables:{
+      "storeIdentifier" :params.store ,
+      "publicationState": publishState
+    }
+  });
 
   return {
     props: {
-      preview,
-      post: {
-        ...data?.posts[0],
-        content,
-      },
-      morePosts: data?.morePosts,
+      headerTemplate: data.headerTemplates[0],
+      footerTemplate: data.footerTemplates[0]
     },
-  }
-}
+    revalidate: 60
 
-// export async function getStaticPaths() {
-//   const allPosts = await getAllPostsWithSlug()
-//   return {
-//     paths: allPosts?.map((post) => `/posts/${post.slug}`) || [],
-//     fallback: true,
-//   }
-// }
+ };
+}

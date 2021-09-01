@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image' 
 import { gql } from "@apollo/client";
-import client from "../lib/apollo-client"; 
+import client from "../../lib/apollo-client"; 
 import styled, { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
@@ -66,12 +66,26 @@ export default function Home({headerTemplate, footerTemplate}) {
     </div>
   )
 }
-export async function getStaticProps({ params, preview = null }) {
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { store: 'Site1' } },
+      { params: { store: 'Site2' } }
+    ],
+    fallback: "blocking"
+  };
+} 
+export async function getStaticProps({params ,preview = false}) {
+
+  console.log("preview :: "+ preview)
+
+  let publishState = preview ? "PREVIEW" : "LIVE" ;
+
   const { data } = await client.query({
     query: gql`
-     query page ($storeIdentifier: String) {
+      query page ($storeIdentifier: String , $publicationState: PublicationState) {
   
-      headerTemplates(where :{storeIdentifier:$storeIdentifier}){
+      headerTemplates(publicationState : $publicationState, where :{storeIdentifier:$storeIdentifier}){
         id,
         Header{
           Menu{
@@ -88,7 +102,7 @@ export async function getStaticProps({ params, preview = null }) {
           }
         } 
       }
-      footerTemplates(where :{storeIdentifier:$storeIdentifier}){
+      footerTemplates(publicationState : PREVIEW, where :{storeIdentifier:$storeIdentifier}){
         Footer{
           WidgetBinder{
             Template
@@ -99,7 +113,8 @@ export async function getStaticProps({ params, preview = null }) {
     }
     `,
     variables:{
-      "storeIdentifier" :"Site1"
+      "storeIdentifier" :params.store ,
+      "publicationState": publishState
     }
   });
 

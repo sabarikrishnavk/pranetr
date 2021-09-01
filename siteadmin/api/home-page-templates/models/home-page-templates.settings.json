@@ -12,6 +12,9 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "storeIdentifier": {
+      "type": "string"
+    },
     "HomeBody": {
       "type": "component",
       "repeatable": false,
