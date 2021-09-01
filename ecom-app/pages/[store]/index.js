@@ -85,7 +85,7 @@ export async function getStaticProps({params ,preview = false}) {
     query: gql`
       query page ($storeIdentifier: String , $publicationState: PublicationState) {
   
-      headerTemplates(publicationState : $publicationState, where :{storeIdentifier:$storeIdentifier}){
+      headerTemplates(sort:"updated_at:DESC",publicationState : $publicationState, where :{storeIdentifier:$storeIdentifier}){
         id,
         Header{
           Menu{
@@ -102,7 +102,7 @@ export async function getStaticProps({params ,preview = false}) {
           }
         } 
       }
-      footerTemplates(publicationState : PREVIEW, where :{storeIdentifier:$storeIdentifier}){
+      footerTemplates(sort:"updated_at:DESC", publicationState : PREVIEW, where :{storeIdentifier:$storeIdentifier}){
         Footer{
           WidgetBinder{
             Template

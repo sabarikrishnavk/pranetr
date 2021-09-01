@@ -66,12 +66,12 @@ export default function Home({headerTemplate, footerTemplate}) {
     </div>
   )
 }
-export async function getStaticProps({ params, preview = null }) {
+export async function getStaticProps() {
   const { data } = await client.query({
     query: gql`
      query page ($storeIdentifier: String) {
   
-      headerTemplates(where :{storeIdentifier:$storeIdentifier}){
+      headerTemplates(sort:"published_at:DESC", where :{storeIdentifier:$storeIdentifier}){
         id,
         Header{
           Menu{
@@ -88,7 +88,7 @@ export async function getStaticProps({ params, preview = null }) {
           }
         } 
       }
-      footerTemplates(where :{storeIdentifier:$storeIdentifier}){
+      footerTemplates(sort:"published_at:DESC", where :{storeIdentifier:$storeIdentifier}){
         Footer{
           WidgetBinder{
             Template
