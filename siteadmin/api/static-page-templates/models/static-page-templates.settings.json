@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "static_page_templates",
+  "info": {
+    "name": "StaticPageTemplates"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "storeIdentifier": {
+      "type": "string"
+    },
+    "pagePath": {
+      "type": "string"
+    },
+    "StaticBody": {
+      "type": "component",
+      "repeatable": false,
+      "component": "body-widgets.static-body"
+    }
+  }
+}

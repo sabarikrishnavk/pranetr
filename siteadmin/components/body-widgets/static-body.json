@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_body_widgets_static_bodies",
+  "info": {
+    "name": "StaticBody",
+    "icon": "ad"
+  },
+  "options": {},
+  "attributes": {
+    "WidgetBinder": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.widget-binder"
+    },
+    "PageContext": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.page-context"
+    },
+    "SEO": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.seo"
+    }
+  }
+}

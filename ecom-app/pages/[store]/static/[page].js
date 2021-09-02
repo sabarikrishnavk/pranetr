@@ -43,9 +43,11 @@ const Container = styled.div`
 
 const HeaderStyle = styled.div`${props => props.headerTemplate.Header.WidgetBinder.Style}`; 
 const MenuStyle = styled.div`${props => props.headerTemplate.Header.Menu.WidgetBinder.Style}`;
+const StaticPageStyle = styled.div`${props => props.staticPageTemplate.StaticBody.WidgetBinder.Style}`;
+
 const Footer = styled.div`${props => props.footerTemplate.Footer.WidgetBinder.Style}`;
    
-export default function Home({headerTemplate, footerTemplate}) {
+export default function Home({headerTemplate, staticPageTemplate, footerTemplate}) {
   // 
   return (  
   <div>   
@@ -59,6 +61,10 @@ export default function Home({headerTemplate, footerTemplate}) {
             dangerouslySetInnerHTML={{ __html: headerTemplate.Header.Menu.WidgetBinder.Script}}>
         </script>
       </MenuStyle> 
+
+      <StaticPageStyle  staticPageTemplate={staticPageTemplate}>
+          <div dangerouslySetInnerHTML={{ __html: staticPageTemplate.StaticBody.WidgetBinder.Template }} />  
+       </StaticPageStyle>
 
       <Footer footerTemplate={footerTemplate}>
         <div dangerouslySetInnerHTML={{ __html: footerTemplate.Footer.WidgetBinder.Template }} />  
@@ -83,7 +89,7 @@ export async function getStaticProps({params ,preview = false}) {
 
   const { data } = await client.query({
     query: gql`
-      query page ($storeIdentifier: String , $publicationState: PublicationState) {
+      query page ($storeIdentifier: String , $path: String, $publicationState: PublicationState) {
   
       headerTemplates(sort:"updated_at:DESC",publicationState : $publicationState, where :{storeIdentifier:$storeIdentifier}){
         id,
@@ -102,7 +108,21 @@ export async function getStaticProps({params ,preview = false}) {
           }
         } 
       }
-      footerTemplates(sort:"updated_at:DESC", publicationState : PREVIEW, where :{storeIdentifier:$storeIdentifier}){
+      staticPageTemplates(sort:"updated_at:DESC", 
+        publicationState :PREVIEW, 
+        where :{storeIdentifier:$storeIdentifier , pagePath: $path    }){
+
+        StaticBody{
+          WidgetBinder{
+            Style
+            Template
+          }
+        } 
+      }
+      footerTemplates(sort:"updated_at:DESC", 
+        publicationState : $publicationState, 
+        where :{storeIdentifier:$storeIdentifier}){
+
         Footer{
           WidgetBinder{
             Template
@@ -114,16 +134,39 @@ export async function getStaticProps({params ,preview = false}) {
     `,
     variables:{
       "storeIdentifier" :params.store ,
-      "publicationState": publishState
+      "publicationState": publishState,
+      "path" : params.page
     }
   });
 
-  return {
-    props: {
-      headerTemplate: data.headerTemplates[0],
-      footerTemplate: data.footerTemplates[0]
-    },
-    revalidate: 60
+  if(data.staticPageTemplates[0]==null){ 
+    return {
+      props: {
+        headerTemplate: data.headerTemplates[0],
+        staticPageTemplate:{
+                          "StaticBody": {
+                            "WidgetBinder": {
+                              "Style": ".stores{\ncolor: \"blue\"\n}",
+                              "Template": "Sorry !!! Page don't exist "
+                            }
+                          }
+                        },
+        footerTemplate: data.footerTemplates[0]
+      },
+      revalidate: 60
 
- };
+    };
+  }else{
+      
+    return {
+      props: {
+        headerTemplate: data.headerTemplates[0],
+        staticPageTemplate: data.staticPageTemplates[0],
+        footerTemplate: data.footerTemplates[0]
+      },
+      revalidate: 60
+
+    };
+
+  }
 }
