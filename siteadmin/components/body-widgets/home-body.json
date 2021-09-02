@@ -22,6 +22,11 @@
     "HomeRow4": {
       "type": "richtext"
     },
+    "WidgetBinder": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.widget-binder"
+    },
     "PageContext": {
       "type": "component",
       "repeatable": false,

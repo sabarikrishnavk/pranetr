@@ -43,9 +43,10 @@ const Container = styled.div`
 
 const HeaderStyle = styled.div`${props => props.headerTemplate.Header.WidgetBinder.Style}`; 
 const MenuStyle = styled.div`${props => props.headerTemplate.Header.Menu.WidgetBinder.Style}`;
+const HomePageStyle = styled.div`${props => props.homePageTemplate.HomeBody.WidgetBinder.Style}`;
 const Footer = styled.div`${props => props.footerTemplate.Footer.WidgetBinder.Style}`;
    
-export default function Home({headerTemplate, footerTemplate}) {
+export default function Home({headerTemplate,homePageTemplate, footerTemplate}) {
   // 
   return (  
   <div>   
@@ -59,6 +60,13 @@ export default function Home({headerTemplate, footerTemplate}) {
             dangerouslySetInnerHTML={{ __html: headerTemplate.Header.Menu.WidgetBinder.Script}}>
         </script>
       </MenuStyle> 
+      <HomePageStyle  homePageTemplate={homePageTemplate}>
+          <div dangerouslySetInnerHTML={{ __html: homePageTemplate.HomeBody.HomeBanner }} />  
+          <div dangerouslySetInnerHTML={{ __html: homePageTemplate.HomeBody.HomeRow1 }} />  
+          <div dangerouslySetInnerHTML={{ __html: homePageTemplate.HomeBody.HomeRow2 }} />  
+          <div dangerouslySetInnerHTML={{ __html: homePageTemplate.HomeBody.HomeRow3 }} />   
+          <div dangerouslySetInnerHTML={{ __html: homePageTemplate.HomeBody.HomeRow4 }} />  
+      </HomePageStyle>
 
       <Footer footerTemplate={footerTemplate}>
         <div dangerouslySetInnerHTML={{ __html: footerTemplate.Footer.WidgetBinder.Template }} />  
@@ -102,7 +110,22 @@ export async function getStaticProps({params ,preview = false}) {
           }
         } 
       }
-      footerTemplates(sort:"updated_at:DESC", publicationState : PREVIEW, where :{storeIdentifier:$storeIdentifier}){
+
+      homePageTemplates(sort:"updated_at:DESC", publicationState :$publicationState, where :{storeIdentifier:$storeIdentifier   }){
+        storeIdentifier
+        HomeBody{
+          WidgetBinder{
+            Style
+          }
+          HomeBanner
+          HomeRow1
+          HomeRow2
+          HomeRow3
+          HomeRow4
+        } 
+      }
+
+      footerTemplates(sort:"updated_at:DESC", publicationState : $publicationState, where :{storeIdentifier:$storeIdentifier}){
         Footer{
           WidgetBinder{
             Template
@@ -118,10 +141,13 @@ export async function getStaticProps({params ,preview = false}) {
     }
   });
 
+  //console.log("Home Body "+ JSON.stringify(data.homePageTemplates[0].HomeBody .WidgetBinder.Style))
+
   return {
     props: {
-      headerTemplate: data.headerTemplates[0],
-      footerTemplate: data.footerTemplates[0]
+      headerTemplate    : data.headerTemplates[0],
+      homePageTemplate  : data.homePageTemplates[0],
+      footerTemplate    : data.footerTemplates[0]
     },
     revalidate: 60
 
