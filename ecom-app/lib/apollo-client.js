@@ -4,7 +4,7 @@ import {setContext} from "@apollo/client/link/context";
 import {InMemoryCache} from "@apollo/client";
 
 const apolloHttpLink = createHttpLink({
-    uri: process.env.REACT_APP_APOLLO_SERVER_URI || 'http://localhost:1337/graphql',
+    uri: process.env.SITEADMIN_SERVER_URL || 'http://localhost:1337/graphql',
 })
 
 const apolloAuthContext = setContext(async (_, {headers}) => {

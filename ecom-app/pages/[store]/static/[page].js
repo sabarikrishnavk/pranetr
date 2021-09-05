@@ -76,7 +76,7 @@ export async function getStaticPaths() {
   return {
     paths: [
       { params: { store: 'Site1' ,page : "about-us"} },
-      { params: { store: 'Site2' ,page : "about-us"} }
+      { params: { store: 'Site1' ,page : "stores"} }
     ],
     fallback: "blocking"
   };

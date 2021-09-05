@@ -95,10 +95,25 @@ docker volume rm $(docker volume ls -q)
 
 nextjs
 
-npx create-next-app 
-header
-ecom-app
+    npx create-next-app 
+    header
+    ecom-app
 
-cd header
-npm install @apollo/client graphql apollo-boost 
-npm install html-react-parser styled-components
+    cd header
+    npm install @apollo/client graphql apollo-boost 
+    npm install html-react-parser styled-components
+
+yarn dev 
+
+
+docker build --build-arg SITEADMIN_SERVER_URL=http://host.docker.internal:1337/graphql -t ecom-app . 
+
+docker build --network=host -t ecom-app .
+
+
+
+
+
+
+vi /etc/hosts
+127.0.0.1 host.docker.internal

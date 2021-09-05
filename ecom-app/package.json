@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "start:dev": "SITEADMIN_SERVER_URL=http://dev.localhost.com:1337/graphql next start",
+    "start:staging": "SITEADMIN_SERVER_URL=http://staging.localhost.com:1337/graphql next start",
+    "start:prod": "SITEADMIN_SERVER_URL=http://prod.localhost.com:1337/graphql next start",
     "start": "next start",
     "lint": "next lint"
   },
