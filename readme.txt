@@ -105,10 +105,10 @@ nextjs
 
 yarn dev 
 
+ 
+docker build -t ecom-app .
 
-docker build --build-arg SITEADMIN_SERVER_URL=http://host.docker.internal:1337/graphql -t ecom-app . 
-
-docker build --network=host -t ecom-app .
+docker run --name ecom-app-dev --env development -p 3000:3000 ecom-app
 
 
 

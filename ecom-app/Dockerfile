@@ -1,20 +1,24 @@
-# Image Size: 243MB
-FROM node:current-alpine
-
-# Create app directory
+FROM node:current-alpine as base
 WORKDIR /app
-
-# Set production env
-ENV NODE_ENV=production
-
-# Install app dependencies
-COPY package*.json /app/
+COPY package.json ./
 RUN npm install
+COPY . .
 
-# Bundle app source
-COPY . /app
-
+# Linux + Node + Source + Project dependencies + build assets
+FROM base AS build
+ENV NODE_ENV=production
+WORKDIR /build
+COPY --from=base /app ./
 RUN npm run build
-EXPOSE 3000
 
-CMD [ "npm", "start" ]
+# We keep some artifacts from build
+FROM node:current-alpine AS production
+ENV NODE_ENV=production
+WORKDIR /app
+COPY --from=build /build/package*.json ./
+COPY --from=build /build/.next ./.next
+COPY --from=build /build/public ./public
+RUN npm install next
+
+EXPOSE 3000
+CMD npm run start
