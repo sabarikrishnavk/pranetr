@@ -42,7 +42,7 @@ services:
      ports:
          - 9200:9200 
   strapi:
-    image: strapi/strapi
+    image: siteadmin
     environment:
       DATABASE_CLIENT: postgres
       DATABASE_NAME: yugabyte
@@ -70,18 +70,26 @@ docker-compose.yaml
 YB Access : http://localhost:7000
 
 
+Local setup_redis_table
+----
 
 npx create-strapi-app siteadmin
 npm install pg --save
+
+Install Graphql plugin
 yarn strapi install graphql
 http://localhost:1337/admin/
 
 
+Docker image :
+----
+docker build -t siteadmin .
+docker run --name siteadmin -p 1337:1337 --env DATABASE_HOST=host.docker.internal siteadmin 
+http://0.0.0.0:1337/admin/
+
+
 Create a siteadmin
 Eg :siteadmin@pranetr.com / Password1
-
-
-Install Graphql plugin
 
 
 Reset all docker
@@ -93,7 +101,7 @@ docker volume rm $(docker volume ls -q)
 
 
 
-nextjs
+ecom-admin setup
 
     npx create-next-app 
     header
@@ -103,17 +111,11 @@ nextjs
     npm install @apollo/client graphql apollo-boost 
     npm install html-react-parser styled-components
 
-yarn dev 
+    yarn dev 
 
  
 docker build -t ecom-app .
-
-docker run --name ecom-app-dev --env development -p 3000:3000 ecom-app
-
+docker run --name ecom-app -p 3000:3000 ecom-app
 
 
-
-
-
-vi /etc/hosts
-127.0.0.1 host.docker.internal
+ 
