@@ -3,6 +3,9 @@ import Image from 'next/image'
 import { gql } from "@apollo/client";
 import client from "../../../lib/apollo-client"; 
 import styled, { createGlobalStyle } from 'styled-components';
+import React from 'react';
+import LoadHtmlTemplate from '../../../components/common/template';
+import PDPTemplate from '../../../components/browse/pdptemplate';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -43,31 +46,35 @@ const Container = styled.div`
 
 const HeaderStyle = styled.div`${props => props.headerTemplate.Header.WidgetBinder.Style}`; 
 const MenuStyle = styled.div`${props => props.headerTemplate.Header.Menu.WidgetBinder.Style}`;
-const StaticPageStyle = styled.div`${props => props.staticPageTemplate.StaticBody.WidgetBinder.Style}`;
+const PDPPageStyle = styled.div`${props => props.pdpPageTemplate.PDPBody.WidgetBinder.Style}`;
 
 const Footer = styled.div`${props => props.footerTemplate.Footer.WidgetBinder.Style}`;
    
-export default function Home({headerTemplate, staticPageTemplate, footerTemplate}) {
+
+
+export default function PDPPage({headerTemplate, pdpPageTemplate, footerTemplate}) {
   // 
+
   return (  
   <div>   
-      <HeaderStyle headerTemplate={headerTemplate}>
-        <div dangerouslySetInnerHTML={{ __html: headerTemplate.Header.WidgetBinder.Template }} />  
+      <HeaderStyle headerTemplate={headerTemplate}> 
+        <LoadHtmlTemplate template = {headerTemplate.Header.WidgetBinder.Template}/> 
       </HeaderStyle>
 
       <MenuStyle headerTemplate={headerTemplate}>
-          <div dangerouslySetInnerHTML={{ __html: headerTemplate.Header.Menu.WidgetBinder.Template }} />  
+          <LoadHtmlTemplate template = {headerTemplate.Header.Menu.WidgetBinder.Template } />  
           <script type="text/javascript"
             dangerouslySetInnerHTML={{ __html: headerTemplate.Header.Menu.WidgetBinder.Script}}>
         </script>
       </MenuStyle> 
 
-      <StaticPageStyle  staticPageTemplate={staticPageTemplate}>
-          <div dangerouslySetInnerHTML={{ __html: staticPageTemplate.StaticBody.WidgetBinder.Template }} />  
-       </StaticPageStyle>
+      <PDPPageStyle  pdpPageTemplate={pdpPageTemplate}>
+          <PDPTemplate template = {pdpPageTemplate.PDPBody.WidgetBinder.Template } 
+                  product = {pdpPageTemplate.PDPBody.WidgetBinder.Data} />  
+       </PDPPageStyle>
 
       <Footer footerTemplate={footerTemplate}>
-        <div dangerouslySetInnerHTML={{ __html: footerTemplate.Footer.WidgetBinder.Template }} />  
+        <LoadHtmlTemplate template = {footerTemplate.Footer.WidgetBinder.Template }/>  
       </Footer>  
     </div>
   )
@@ -75,8 +82,8 @@ export default function Home({headerTemplate, staticPageTemplate, footerTemplate
 export async function getStaticPaths() {
   return {
     paths: [
-      { params: { store: 'Site1' ,productid : "about-us"} },
-      { params: { store: 'Site1' ,productid : "stores"} }
+      { params: { store: 'Site1' ,productid : "1"} },
+      { params: { store: 'Site1' ,productid : "2"} }
     ],
     fallback: "blocking"
   };
@@ -89,7 +96,7 @@ export async function getStaticProps({params ,preview = false}) {
 
   const { data } = await client.query({
     query: gql`
-      query page ($storeIdentifier: String , $path: String, $publicationState: PublicationState) {
+      query page ($storeIdentifier: String , $publicationState: PublicationState) {
   
       headerTemplates(sort:"updated_at:DESC",publicationState : $publicationState, where :{storeIdentifier:$storeIdentifier}){
         id,
@@ -108,16 +115,18 @@ export async function getStaticProps({params ,preview = false}) {
           }
         } 
       }
-      staticPageTemplates(sort:"updated_at:DESC", 
-        publicationState :PREVIEW, 
-        where :{storeIdentifier:$storeIdentifier , pagePath: $path    }){
+      pdpPageTemplates(sort:"updated_at:DESC", 
+        publicationState :$publicationState, 
+        where :{storeIdentifier:$storeIdentifier}){
 
-        StaticBody{
-          WidgetBinder{
-            Style
-            Template
+          PDPBody{
+            WidgetBinder{
+              Style
+              Template
+              Data
+            }
+            
           }
-        } 
       }
       footerTemplates(sort:"updated_at:DESC", 
         publicationState : $publicationState, 
@@ -134,24 +143,23 @@ export async function getStaticProps({params ,preview = false}) {
     `,
     variables:{
       "storeIdentifier" :params.store ,
-      "publicationState": publishState,
-      "path" : params.productid
+      "publicationState": publishState
     }
   });
 
-  if(data.staticPageTemplates[0]==null){ 
+  if(data.pdpPageTemplates[0]==null){ 
     return {
       props: {
-        headerTemplate: data.headerTemplates[0],
-        staticPageTemplate:{
-                          "StaticBody": {
+        headerTemplate  : data.headerTemplates[0],
+        pdpPageTemplate :{
+                          "PDPBody": {
                             "WidgetBinder": {
                               "Style": ".stores{\ncolor: \"blue\"\n}",
-                              "Template": "Sorry !!! Page don't exist "
+                              "Template": "Sorry !!! Invalid Product Page  "
                             }
                           }
                         },
-        footerTemplate: data.footerTemplates[0]
+        footerTemplate  : data.footerTemplates[0]
       },
       revalidate: 60
 
@@ -160,9 +168,9 @@ export async function getStaticProps({params ,preview = false}) {
       
     return {
       props: {
-        headerTemplate: data.headerTemplates[0],
-        staticPageTemplate: data.staticPageTemplates[0],
-        footerTemplate: data.footerTemplates[0]
+        headerTemplate  : data.headerTemplates[0],
+        pdpPageTemplate : data.pdpPageTemplates[0],
+        footerTemplate  : data.footerTemplates[0]
       },
       revalidate: 60
 

@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pdp_page_templates",
+  "info": {
+    "name": "PDPPageTemplates",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "storeIdentifier": {
+      "type": "string"
+    },
+    "templateId": {
+      "type": "string"
+    },
+    "PDPBody": {
+      "type": "component",
+      "repeatable": false,
+      "component": "body-widgets.pdp-body"
+    }
+  }
+}

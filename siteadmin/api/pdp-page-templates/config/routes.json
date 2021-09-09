@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/pdp-page-templates",
+      "handler": "pdp-page-templates.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/pdp-page-templates/count",
+      "handler": "pdp-page-templates.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/pdp-page-templates/:id",
+      "handler": "pdp-page-templates.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/pdp-page-templates",
+      "handler": "pdp-page-templates.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/pdp-page-templates/:id",
+      "handler": "pdp-page-templates.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/pdp-page-templates/:id",
+      "handler": "pdp-page-templates.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
