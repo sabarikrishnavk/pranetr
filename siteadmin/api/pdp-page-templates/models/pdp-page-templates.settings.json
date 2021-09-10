@@ -18,6 +18,9 @@
     "templateId": {
       "type": "string"
     },
+    "urlPattern": {
+      "type": "string"
+    },
     "PDPBody": {
       "type": "component",
       "repeatable": false,

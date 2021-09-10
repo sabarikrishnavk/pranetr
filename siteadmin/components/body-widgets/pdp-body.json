@@ -2,7 +2,8 @@
   "collectionName": "components_body_widgets_pdp_bodies",
   "info": {
     "name": "PDPBody",
-    "icon": "atom"
+    "icon": "atom",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -15,6 +16,11 @@
       "type": "component",
       "repeatable": false,
       "component": "page-common-widgets.page-context"
+    },
+    "APIBinder": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-common-widgets.api-binder"
     }
   }
 }

@@ -52,7 +52,7 @@ const Footer = styled.div`${props => props.footerTemplate.Footer.WidgetBinder.St
    
 
 
-export default function PDPPage({headerTemplate, pdpPageTemplate, footerTemplate}) {
+export default function PDPPage({headerTemplate, pdpPageTemplate, pdpPageData,footerTemplate}) {
   // 
 
   return (  
@@ -70,7 +70,7 @@ export default function PDPPage({headerTemplate, pdpPageTemplate, footerTemplate
 
       <PDPPageStyle  pdpPageTemplate={pdpPageTemplate}>
           <PDPTemplate template = {pdpPageTemplate.PDPBody.WidgetBinder.Template } 
-                  product = {pdpPageTemplate.PDPBody.WidgetBinder.Data} />  
+                  product = {pdpPageData} />  
        </PDPPageStyle>
 
       <Footer footerTemplate={footerTemplate}>
@@ -118,8 +118,12 @@ export async function getStaticProps({params ,preview = false}) {
       pdpPageTemplates(sort:"updated_at:DESC", 
         publicationState :$publicationState, 
         where :{storeIdentifier:$storeIdentifier}){
-
+          
           PDPBody{
+            APIBinder{
+              Name
+              externalAPI
+            }
             WidgetBinder{
               Style
               Template
@@ -165,11 +169,19 @@ export async function getStaticProps({params ,preview = false}) {
 
     };
   }else{
+
+    let pdpurl = data.pdpPageTemplates[0].PDPBody.APIBinder.externalAPI;
+    let seourl = params.productid;
+    pdpurl = pdpurl.replace('{0}',seourl)
+    console.log(pdpurl)
+    const res = await fetch(pdpurl)
+    const pdpdata = await res.json()
       
     return {
       props: {
         headerTemplate  : data.headerTemplates[0],
         pdpPageTemplate : data.pdpPageTemplates[0],
+        pdpPageData     : pdpdata,
         footerTemplate  : data.footerTemplates[0]
       },
       revalidate: 60
